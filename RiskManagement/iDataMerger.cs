@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,6 @@ namespace RiskManagement2
 {
     public interface iDataMerger<T1, T2, T>
     {
-       List <T> mergeData(List<T1> array1, List<T2> array2);
+       List <T> MergeData(List<T1> array1, List<T2> array2);
     }
 }
