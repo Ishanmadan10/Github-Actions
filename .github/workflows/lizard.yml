@@ -1,0 +1,38 @@
+name: Lizard Code Complexity Analysis
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lizard-analysis:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '3.1'  # or the version you are using
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Run Lizard
+      run: |
+        dotnet tool install -g Lizard
+        lizard -C -l cs
+      shell: bash
+
+    - name: Commit and Push Results
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        git add .
+        git commit -m "Add Lizard code complexity analysis results"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
