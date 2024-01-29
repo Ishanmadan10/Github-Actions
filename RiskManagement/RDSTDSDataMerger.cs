@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 
 namespace RiskManagement2
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
-    namespace RiskManagement2
-    {
+    
         public class RDSTDSDataMerger : iDataMerger<RDSDataModel, TDSDataModel, MergedData>
         {
             public List<MergedData> MergeData(List<RDSDataModel> array1, List<TDSDataModel> array2)
@@ -46,5 +40,6 @@ namespace RiskManagement2
             }
         }
     }
+
 
 
