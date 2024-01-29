@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +33,7 @@ namespace RiskManagement2
             var tdsData = tdsXMLDataReader.getTDSDataList();
             var rdsData = rdsXMLDataReader.getRDSDataList();
 
-            var mergedData = dataMerger.mergeData(rdsData, tdsData);
+            var mergedData = dataMerger.MergeData(rdsData, tdsData);
             var riskResult = riskCalculator.calculate(new List<RiskInputDataModel> { new RiskInputDataModel() });
 
             reportGenerator.generateReport(riskResult);
