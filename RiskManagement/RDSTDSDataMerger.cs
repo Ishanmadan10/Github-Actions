@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,40 +7,44 @@ using System.Threading.Tasks;
 
 namespace RiskManagement2
 {
-    public class RDSTDSDataMerger : iDataMerger<RDSDataModel, TDSDataModel, MergedData>
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
+    namespace RiskManagement2
     {
-        public List<MergedData> mergeData(List<RDSDataModel> array1, List<TDSDataModel> array2)
+        public class RDSTDSDataMerger : iDataMerger<RDSDataModel, TDSDataModel, MergedData>
         {
-            
-                List<MergedData> mergedData = new List<MergedData>();
+            public List<MergedData> MergeData(List<RDSDataModel> array1, List<TDSDataModel> array2)
+            {
+                return array1.Select(item1 => MergeItem(item1)).ToList();
+            }
 
-                foreach (var item1 in array1)
-                {
+            private MergedData MergeItem(RDSDataModel item1)
+            {
                 MergedData mergedItem = Activator.CreateInstance<MergedData>();
-                    Type type1 = typeof(RDSDataModel);
-                    Type type2 = typeof(TDSDataModel);
 
-                    foreach (PropertyInfo prop in type1.GetProperties())
+                Type type1 = typeof(RDSDataModel);
+                Type type2 = typeof(TDSDataModel);
+
+                foreach (PropertyInfo prop in type1.GetProperties())
+                {
+                    PropertyInfo prop2 = type2.GetProperty(prop.Name);
+
+                    if (prop2 != null && prop.CanWrite)
                     {
-                        PropertyInfo prop2 = type2.GetProperty(prop.Name);
-
-                        if (prop2 != null && prop.CanWrite)
-                        {
-                            prop.SetValue(mergedItem, prop2.GetValue(item1));
-                        }
-                        else if (prop.CanWrite)
-                        {
-                            prop.SetValue(mergedItem, prop.GetValue(item1));
-                        }
+                        prop.SetValue(mergedItem, prop2.GetValue(item1));
                     }
-
-                    mergedData.Add(mergedItem);
+                    else if (prop.CanWrite)
+                    {
+                        prop.SetValue(mergedItem, prop.GetValue(item1));
+                    }
                 }
 
-                return mergedData;
-           
+                return mergedItem;
+            }
         }
     }
 
-}
+
